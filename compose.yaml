@@ -52,7 +52,9 @@ services:
         image: 'amazon/dynamodb-local:latest'
         ports:
             - '${FORWARD_DYNAMODB_PORT:-8000}:8000'
-        command: '-jar DynamoDBLocal.jar -sharedDb -inMemory'
+        command: '-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data'
+        volumes:
+            - './docker/dynamodb:/home/dynamodblocal/data'
         networks:
             - sail
     dynamodb-admin:

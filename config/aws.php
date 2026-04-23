@@ -18,7 +18,6 @@ return [
             'secret' => env('AWS_DYNAMODB_SECRET_ACCESS_KEY', env('AWS_SECRET_ACCESS_KEY', 'local')),
         ],
         'endpoint' => env('AWS_DYNAMODB_ENDPOINT', env('DYNAMODB_ENDPOINT', 'http://dynamodb-local:8000')),
-        'table' => env('AWS_DYNAMODB_TABLE', 'messages'),
     ],
 ];
 
