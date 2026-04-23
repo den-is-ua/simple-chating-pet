@@ -52,9 +52,7 @@ services:
         image: 'amazon/dynamodb-local:latest'
         ports:
             - '${FORWARD_DYNAMODB_PORT:-8000}:8000'
-        command: '-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data'
-        volumes:
-            - 'sail-dynamodb:/home/dynamodblocal/data'
+        command: '-jar DynamoDBLocal.jar -sharedDb -inMemory'
         networks:
             - sail
     dynamodb-admin:
@@ -72,6 +70,4 @@ networks:
         driver: bridge
 volumes:
     sail-pgsql:
-        driver: local
-    sail-dynamodb:
         driver: local
