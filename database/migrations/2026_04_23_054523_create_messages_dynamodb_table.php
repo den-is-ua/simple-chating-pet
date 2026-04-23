@@ -25,8 +25,6 @@ return new class extends Migration
             ],
             'BillingMode' => 'PAY_PER_REQUEST',
         ]);
-
-        $client->waitUntil('TableExists', ['TableName' => $tableName]);
     }
 
     /**
