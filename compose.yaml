@@ -48,9 +48,30 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    dynamodb-local:
+        image: 'amazon/dynamodb-local:latest'
+        ports:
+            - '${FORWARD_DYNAMODB_PORT:-8000}:8000'
+        command: '-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data'
+        volumes:
+            - 'sail-dynamodb:/home/dynamodblocal/data'
+        networks:
+            - sail
+    dynamodb-admin:
+        image: 'aaronshaf/dynamodb-admin:latest'
+        ports:
+            - '${FORWARD_DYNAMODB_ADMIN_PORT:-8001}:8001'
+        environment:
+            DYNAMO_ENDPOINT: 'http://dynamodb-local:8000'
+        depends_on:
+            - dynamodb-local
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
 volumes:
     sail-pgsql:
+        driver: local
+    sail-dynamodb:
         driver: local
