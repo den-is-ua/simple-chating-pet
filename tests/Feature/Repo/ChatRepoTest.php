@@ -45,3 +45,24 @@ test('removeChat soft deletes chat by uuid', function () {
         'id' => $chatId,
     ]);
 });
+
+test('getAllChats returns only chats related to the user', function () {
+    $user = User::factory()->create();
+    $otherA = User::factory()->create();
+    $otherB = User::factory()->create();
+
+    app(ChatRepo::class)->createNewChat($user->id, $otherA->id, 'A to user');
+    app(ChatRepo::class)->createNewChat($otherB->id, $user->id, 'user as recipient');
+    app(ChatRepo::class)->createNewChat($otherA->id, $otherB->id, 'unrelated');
+
+    $result = app(ChatRepo::class)->getAllChats($user->id);
+    $list = $result->getList();
+
+    expect($list)->toHaveCount(2);
+    expect(
+        $list->contains(fn ($chat) => $chat->sender_id === $user->id && $chat->recipient_id === $otherA->id),
+    )->toBeTrue();
+    expect(
+        $list->contains(fn ($chat) => $chat->sender_id === $otherB->id && $chat->recipient_id === $user->id),
+    )->toBeTrue();
+});
