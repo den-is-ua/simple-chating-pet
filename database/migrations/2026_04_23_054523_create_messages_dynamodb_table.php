@@ -10,6 +10,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (config('app.env') === 'testing') {
+            return;
+        }
+
         $client = DynamoDBService::client();
        
 
@@ -32,6 +36,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (config('app.env') === 'testing') {
+            return;
+        }
+        
         $client = DynamoDBService::client();
         $client->deleteTable([
             'TableName' => DynamoDBService::MESSAGE_TABLE,

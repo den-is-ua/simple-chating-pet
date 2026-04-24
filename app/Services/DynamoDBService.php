@@ -8,6 +8,8 @@ use Aws\DynamoDb\DynamoDbClient;
 
 class DynamoDBService 
 {
+    public const MESSAGE_TABLE = 'messages';
+
     public $client;
     
     
