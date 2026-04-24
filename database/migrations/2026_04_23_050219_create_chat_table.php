@@ -16,8 +16,8 @@ return new class extends Migration
             $table->bigInteger('sender_id')->unsigned();
             $table->bigInteger('recipient_id')->unsigned();
             $table->text('last_message');
-            $table->timestamp('sent_at');
-            $table->timestamp('deleted_at');
+            $table->timestamp('sent_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
             
             $table->foreign('sender_id')->references('id')->on('users');
