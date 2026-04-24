@@ -11,6 +11,11 @@ class MessageRepo implements MessageRepoContract
 {
     private string $table = 'messages';
 
+    protected function newDynamoDbService(): DynamoDBService
+    {
+        return new DynamoDBService($this->table);
+    }
+
     
     #[\Override]
     public function createNewMessage(string $chatId, int $senderId, int $recipientId, string $message): bool
@@ -19,9 +24,8 @@ class MessageRepo implements MessageRepoContract
         $messageId = (int) $sentAt;
 
         try {
-            $dynamoDb = new DynamoDBService($this->table);
-
-            $dynamoDb->client->putItem([
+            $dynamoDBClient = $this->newDynamoDbService()->client;
+            $dynamoDBClient->putItem([
                 'TableName' => $this->table,
                 'Item' => [
                     'chat_id' => ['S' => $chatId],

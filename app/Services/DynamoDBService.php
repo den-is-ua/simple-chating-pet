@@ -32,7 +32,7 @@ class DynamoDBService
                     'key' => 'local',
                     'secret' => 'local',
                 ],
-                'endpoint' => $config['endpoint'] ?? 'http://dynamodb-local:8000',
+                'endpoint' => $config['endpoint'],
             ]);
         }
         
