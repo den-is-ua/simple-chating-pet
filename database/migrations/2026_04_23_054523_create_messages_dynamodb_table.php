@@ -17,7 +17,7 @@ return new class extends Migration
             'TableName' => 'messages',
             'AttributeDefinitions' => [
                 ['AttributeName' => 'chat_id', 'AttributeType' => 'S'],
-                ['AttributeName' => 'sent_at', 'AttributeType' => 'S'],
+                ['AttributeName' => 'sent_at', 'AttributeType' => 'N'],
             ],
             'KeySchema' => [
                 ['AttributeName' => 'chat_id', 'KeyType' => 'HASH'],
@@ -32,7 +32,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        
+        $client = DynamoDBService::client();
+        $client->deleteTable([
+            'TableName' => DynamoDBService::MESSAGE_TABLE,
+        ]);
     }
 
     
