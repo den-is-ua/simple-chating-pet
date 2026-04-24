@@ -2,10 +2,10 @@
 
 namespace App\Supports;
 
-use App\Models\Chat;
+use App\NoSqlModels\Message;
 use Illuminate\Support\Collection;
 
-class ChatListSupport
+class MessageListSupport
 {
     private Collection $list;
     
@@ -14,14 +14,14 @@ class ChatListSupport
         $this->list = new Collection();
     }
     
-    public function add(Chat $chat): void
+    public function add(Message $message): void
     {
-        $this->list->push($chat);
+        $this->list->push($message);
     }
     
     /**
      * 
-     * @return Collection|Chat[]
+     * @return Collection|Message[]
      */
     public function getList(): Collection
     {
