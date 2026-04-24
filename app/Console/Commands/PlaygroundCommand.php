@@ -9,6 +9,7 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use function dd;
 
 #[Signature('pg')]
 #[Description('Command for testing')]
@@ -25,6 +26,7 @@ class PlaygroundCommand extends Command
 
         $rm = new MessageRepo();
         
-        $rm->createNewMessage(Str::uuid(), 1, 1, 'new mess');
+        $r = $rm->getMessages('cc06efee-61e5-4d36-ac0b-b3067cd3ac3e');
+        dd($r);
     }
 }
