@@ -5,15 +5,18 @@ namespace App\Repo;
 use App\Contracts\MessageRepoContract;
 use App\Services\DynamoDBService;
 use App\Supports\MessageListSupport;
+use Aws\DynamoDb\DynamoDbClient;
 use Throwable;
 
 class MessageRepo implements MessageRepoContract
 {
-    private string $table = 'messages';
+    const TABLE = 'messages';
+    
+    readonly DynamoDbClient $dynamoDbClient;
 
-    protected function newDynamoDbService(): DynamoDBService
+    public function __construct()
     {
-        return new DynamoDBService($this->table);
+        $this->dynamoDbClient = (new DynamoDBService(self::TABLE))->client;
     }
 
     
@@ -24,9 +27,8 @@ class MessageRepo implements MessageRepoContract
         $messageId = (int) $sentAt;
 
         try {
-            $dynamoDBClient = $this->newDynamoDbService()->client;
-            $dynamoDBClient->putItem([
-                'TableName' => $this->table,
+            $this->dynamoDbClient->putItem([
+                'TableName' => self::TABLE,
                 'Item' => [
                     'chat_id' => ['S' => $chatId],
                     'sent_at' => ['N' => $sentAt],
