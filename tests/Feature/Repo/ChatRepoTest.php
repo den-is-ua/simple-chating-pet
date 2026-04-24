@@ -26,3 +26,22 @@ test('createNewChat stores chat and returns its id', function () {
         'last_message' => $message,
     ]);
 });
+
+test('removeChat soft deletes chat by uuid', function () {
+    $sender = User::factory()->create();
+    $recipient = User::factory()->create();
+
+    $chatId = app(ChatRepo::class)->createNewChat(
+        $sender->id,
+        $recipient->id,
+        'Message to remove',
+    );
+
+    $removed = app(ChatRepo::class)->removeChat($chatId);
+
+    expect($removed)->toBeTrue();
+
+    $this->assertSoftDeleted('chat', [
+        'id' => $chatId,
+    ]);
+});

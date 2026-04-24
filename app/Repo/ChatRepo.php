@@ -25,7 +25,7 @@ class ChatRepo implements ChatRepoContract
     public function removeChat($uuId): bool
     {
         $chat = Chat::findOrFail($uuId);
-        return $chat->softDelete();
+        return (bool) $chat->delete();
     }
     
     #[\Override]
